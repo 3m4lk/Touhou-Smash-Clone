@@ -1,0 +1,7 @@
+Hitbox - where Player / Genjii takes damage; used for Player hitboxes
+Attack - what deals damage; used for attacks of all kinds
+Invincible - can be hit by attacks, but can't take damage nor knockback; used shortly after respawning, in final smashes or after grabbing Full Power (?)
+Intangible - can't be hit by attacks; used for dodges
+Shield - Absorbs attacks; used for shield
+
+Properties:

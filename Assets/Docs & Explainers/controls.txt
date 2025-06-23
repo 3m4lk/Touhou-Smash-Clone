@@ -1,0 +1,7 @@
+Movement (WASD)
+Jump (Space)
+Attack (J)
+Special (K)
+Shield (L)
+
+all must be rebindable for both kb and gamepads

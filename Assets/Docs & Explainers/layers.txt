@@ -1,0 +1,4 @@
+Ground Solid - solid ground, unpassable in any way
+Ground Soft - solid on top, not solid from below; kinda like the platforms in the dk arcade stage in brawl
+
+Player - Player's collision box; for movement only

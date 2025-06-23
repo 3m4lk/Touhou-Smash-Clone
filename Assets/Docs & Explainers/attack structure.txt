@@ -1,0 +1,2 @@
+angle
+ignore intangible (for final smashes)
