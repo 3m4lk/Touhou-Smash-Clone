@@ -13,3 +13,16 @@ public class NameGeneratorButton : Editor
         }
     }
 }
+[CustomEditor(typeof(PlayerStats))]
+public class PlayerStatsButton : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        PlayerStats stats = (PlayerStats)target;
+        base.OnInspectorGUI();
+        if (GUILayout.Button("TestDealDmg"))
+        {
+            stats.dealDmg(stats.testDmg, stats.testKnockVec);
+        }
+    }
+}
