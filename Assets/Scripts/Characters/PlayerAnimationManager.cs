@@ -35,7 +35,7 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     public void switchDirection(float input, bool ignoreAirCheck = false, bool isRecovery = false)
     {
-        if ((input == 0 || !moveset.isGrounded && !ignoreAirCheck || moveset.duckState || ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) && !isRecovery) return;
+        if ((input == 0 || !moveset.isGrounded && !ignoreAirCheck || moveset.duckState || ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) && !isRecovery || moveset.ownStats.isKnocked || moveset.ownStats.isStunned) return;
         //print("direChange");
 
         if (lookDire != Mathf.Sign(input) || ignoreAirCheck)

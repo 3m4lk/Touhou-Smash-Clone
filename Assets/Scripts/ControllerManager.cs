@@ -40,13 +40,47 @@ public class ControllerManager : MonoBehaviour
     public GameObject devUI;
     public TMP_Text d_inputs;
 
+    private float tillDevModeOff = 13.37f;
+    private int devModeCount = 0;
+
     private void Awake()
     {
-        devUI.gameObject.SetActive(Application.isEditor && devMode);
+        tillDevModeOff = 13.37f;
+        devStart();
+    }
+    void devStart()
+    {
+        devUI.gameObject.SetActive(devMode);
+        toggleVisuals(devMode);
         devKeyCheck();
+    }
+    void toggleVisuals(bool input)
+    {
+        GameObject[] allVisuals = GameObject.FindGameObjectsWithTag("hitboxVis");
+        for (int i = 0; i < allVisuals.Length; i++)
+        {
+            allVisuals[i].GetComponent<SpriteRenderer>().enabled = input;
+        }
     }
     private void Update()
     {
+        if (tillDevModeOff > 0f)
+        {
+            if (Input.GetKeyDown(devModeCount + ""))
+            {
+                if (devModeCount == 9)
+                {
+                    devMode = true;
+                    devStart();
+                    tillDevModeOff = 0;
+                    toggleVisuals(true);
+                    print("<color=magenta>WELCOME TO DEV MODE!");
+                }
+                devModeCount++;
+            }
+        }
+        tillDevModeOff = Mathf.Max(tillDevModeOff - Time.deltaTime, 0f);
+
         for (int i = 0; i < Players.Length; i++)
         {
             for (int a = 0; a < Players[i].inputs.Length; a++)
@@ -77,7 +111,7 @@ public class ControllerManager : MonoBehaviour
     void devKeyCheck()
     {
         axisValueUpdate();
-        if (Application.isEditor && devMode)
+        if (devMode)
         {
             d_inputs.text = null;
             for (int i = 0; i < Players[0].inputs.Length; i++)
@@ -153,7 +187,7 @@ public class ControllerManager : MonoBehaviour
                 }
             }
             devKeyCheck();
-            //if (Application.isEditor && devMode) { print("Lost Focus!"); }
+            //if (devMode) { print("Lost Focus!"); }
         } // kick off all inputs if lost focus
     }
 }

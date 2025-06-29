@@ -21,7 +21,17 @@ public class Hitbox : MonoBehaviour
 
     [Tooltip("set to -1 for infinite hits")]
     public int hitAmount;
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private float attackCooldown;
+    private void Awake()
+    {
+        if (GetComponent<SpriteRenderer>()) GetComponent<SpriteRenderer>().enabled = GameObject.Find("ControllerManager").GetComponent<ControllerManager>().devMode;
+    }
+    private void FixedUpdate()
+    {
+        attackCooldown = Mathf.Max(attackCooldown - Time.fixedDeltaTime, 0f);
+    }
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (hitAmount == 0) return;
 
@@ -32,9 +42,13 @@ public class Hitbox : MonoBehaviour
             case hbt.Hitbox:
                 break; // self
             case hbt.Attack:
-                if (collision.GetComponent<Hitbox>().hitboxType == hbt.Attack) return;
+                if (attackCooldown != 0f) return;
+
+                if (collision.GetComponent<Hitbox>().hitboxType == hbt.Attack) return; // if other is also an attack; add more ignored hitboxes perhaps?
 
                 collision.attachedRigidbody.GetComponent<PlayerStats>().dealDmg(damage, kbVector());
+                //attackCooldown = 0.01f * 4f; // 3x fixed time step
+                attackCooldown = 0.1f;
 
                 break; // self
             case hbt.Invincible:
@@ -48,6 +62,35 @@ public class Hitbox : MonoBehaviour
         // print("gerfasb");
 
         //print(collision.attachedRigidbody.name); // other object
+    }
+
+    public void switchHitboxType(hbt input)
+    {
+        hitboxType = input;
+
+        if (!GetComponent<SpriteRenderer>().enabled) return; // dev mode hitboxes
+
+        string desMaterial = default;
+        switch (input)
+        {
+            case hbt.Hitbox:
+                desMaterial = "hitbox";
+                break;
+            case hbt.Attack:
+                desMaterial = "attack";
+                break;
+            case hbt.Invincible:
+                desMaterial = "invincible";
+                break;
+            case hbt.Shield:
+                desMaterial = "shield";
+                break;
+            default:
+                print("bruh");
+                break;
+        }
+        GetComponent<SpriteRenderer>().material = Resources.Load<Material>("Materials/DEV/" + desMaterial);
+        // change color (if dev)
     }
     Vector2 kbVector()
     {

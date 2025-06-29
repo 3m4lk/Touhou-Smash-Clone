@@ -31,7 +31,15 @@ public class move
 [System.Serializable]
 public class mvst
 {
+    [Tooltip("idk what for but SURELY this could be useful for sum?")]
+    public string fullName;
     public string name;
+
+    [Space]
+    public string title;
+
+    [Space]
+    public int skin;
 
     public int jumpAmount;
 
@@ -99,6 +107,8 @@ public class PlayerMoveset : MonoBehaviour
 
     private string lastVanityAnim;
 
+    private bool culpritCheck;
+
     private void Awake()
     {
         ownRb.gravityScale = moveset.gravityStrength;
@@ -109,7 +119,30 @@ public class PlayerMoveset : MonoBehaviour
     {
         if (ownStats.respawnOnInput) ownStats.respawn();
 
-        if (!ownStats.isAlive) return;
+        if (!ownStats.isAlive || ownStats.isStunned) return;
+
+        if (ownStats.isKnocked)
+        {
+            if (ownStats.knockProgress == 0f)
+            {
+                /*switch (input)
+                {
+                    case "mL":
+                        return;
+                    case "mR":
+                        return;
+                    case "mU":
+                        return;
+                    case "mD":
+                        return;
+                } // side directionals don't disable knock //*/ // yes they do, you've played brawl
+
+                if (input == "mD") return; // except that one, this 1 stays
+
+                ownStats.bootOutOfKnock();
+            }
+            return;
+        }
 
         switch (input)
         {
@@ -322,7 +355,7 @@ public class PlayerMoveset : MonoBehaviour
 
     void movement()
     {
-        if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && isGrounded || ownStats.shieldMode) return;
+        if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && isGrounded || ownStats.shieldMode || ownStats.isKnocked && isGrounded || ownStats.isStunned) return;
         vertVelo = ownRb.linearVelocityY;
 
         //ownRb.AddForce(desMovementVector * moveset.speed, ForceMode2D.)
@@ -343,6 +376,9 @@ public class PlayerMoveset : MonoBehaviour
 
         horMovVec.y = 0;
 
+        float knockMult = 1f;
+        if (ownStats.isKnocked) knockMult = 0.5f;
+
         if (sprintStep && sprintPushCooldown == 0f)
         {
             sprintPushCooldown = 0.4f; // to prevent sprintspamming
@@ -357,7 +393,7 @@ public class PlayerMoveset : MonoBehaviour
         }
         else if (Mathf.Abs(horVelo) < moveset.speed * sprintMultiplier)
         {
-            ownRb.AddForce(horMovVec * moveset.speed, ForceMode2D.Impulse);
+            ownRb.AddForce(horMovVec * moveset.speed * knockMult, ForceMode2D.Impulse);
         }
     }
     void groundCheck()
@@ -394,6 +430,7 @@ public class PlayerMoveset : MonoBehaviour
                 animManager.switchDirection(ownController.Players[0].inputAxes[0].value, false, true); // refresh facing direction
                 //print("DIRE: " + ownController.Players[0].inputAxes[0].value);
 
+                if (ownStats.isKnocked) ownStats.knockProgress = 1.5f; // knockState for 2 secs when knocked touches floor
 
                 return;
             }
@@ -498,7 +535,7 @@ public class PlayerMoveset : MonoBehaviour
         {
             //print("did the thing: " + input);
             outputAnim = "idleAir";
-            if (ownStats.isKnocked) outputAnim = "airKnocked";
+            //if (ownStats.isKnocked) outputAnim = "airKnocked";
         }
         else if (!ownStats.isKnocked)
         {
@@ -518,12 +555,16 @@ public class PlayerMoveset : MonoBehaviour
                     }
                     break;
                 case "x_shieldRelease":
-                    /*if (ownStats.unshieldCooldown > 0f)
+                    /*if (!culpritCheck)
                     {
-                        outputAnim = "x_shield";
-                        break;
-                    }//*/
+                        /*if (ownStats.unshieldCooldown > 0f)
+                        {
+                            outputAnim = "x_shield";
+                            break;
+                        }//* /
 
+                        outputAnim = "idle";
+                    }//*/
                     outputAnim = "idle";
                     ownStats.toggleShield(false);
                     break;
@@ -537,17 +578,37 @@ public class PlayerMoveset : MonoBehaviour
         }
         else
         {
-            outputAnim = "knockedIdle";
+            outputAnim = "airKnocked";
+            if (isGrounded)
+            {
+                outputAnim = "knockedIdle";
+            }
+        }
+
+        //if (culpritCheck) print("<color=red>GOTCHA BITCH: " + input);
+        culpritCheck = false;
+
+        if (ownStats.isStunned)
+        {
+            outputAnim = "airKnocked";
+            if (isGrounded)
+            {
+                outputAnim = "confused";
+            }
         }
 
         if (lastVanityAnim != outputAnim)
         {
             lastVanityAnim = outputAnim;
+
+            if (outputAnim == "jump") culpritCheck = true;
+
             if (input == "x_shieldRelease" && !ownStats.isKnocked)
             {
                 animManager.playAnimation(outputAnim, true);
                 return;
             }
+
             animManager.playAnimation(outputAnim);
         }
     }
