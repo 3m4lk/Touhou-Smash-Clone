@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
 {
+    public PlayerMoveset moveset;
+
     [Header("1: right;\n-1: left")]
     public float lookDire;
     public Transform modelCont;
@@ -17,6 +19,8 @@ public class PlayerAnimationManager : MonoBehaviour
 
     public Animator ownAnimator;
     public string currentAnimation;
+
+    public string currentTag;
     private void Awake()
     {
         turnProg = turnTime;
@@ -29,12 +33,21 @@ public class PlayerAnimationManager : MonoBehaviour
 
         turnAnim();
     }
-    public void switchDirection(float input)
+    public void switchDirection(float input, bool ignoreAirCheck = false, bool isRecovery = false)
     {
-        if (input == 0) return;
+        if ((input == 0 || !moveset.isGrounded && !ignoreAirCheck || moveset.duckState || ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) && !isRecovery) return;
         //print("direChange");
-        lookDire = Mathf.Sign(input);
-        progDire = lookDire;
+
+        if (lookDire != Mathf.Sign(input) || ignoreAirCheck)
+        {
+            moveset.sprintMultiplier = 1f;
+
+            lookDire = Mathf.Sign(input);
+            progDire = lookDire;
+
+            //print("changeDire");
+            //moveset.sprintCooldown = 0;
+        }
     }
     void turnAnim()
     {
@@ -42,17 +55,33 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     public void playAnimation(string input, bool surpassNoMove = false)
     {
-        print("play anim: " + input);
+        //currentTag = ownAnimator.GetCurrentAnimatorStateInfo(0).tagHash + "";
+        //print("play anim: " + input);
 
         if (!ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") || surpassNoMove)
         {
+            if (!moveset.duckState)
+            {
+                moveset.duckCollisions(false);
+                //if (input == currentAnimation) return;
+                currentAnimation = input;
 
-            if (input == currentAnimation) return;
-            currentAnimation = input;
-            ownAnimator.StopPlayback();
-            ownAnimator.enabled = false;
-            ownAnimator.enabled = true;
-            ownAnimator.Play(input);
+                // get some solution for replaying alr playing animations
+
+                ownAnimator.Play(input, -1, 0);
+
+                //ownAnimator.Play("input", 0, 0f);
+                /*ownAnimator.StopPlayback();
+                ownAnimator.enabled = false;
+                ownAnimator.enabled = true;
+                ownAnimator.Play(input);//*/
+            }
+            else
+            {
+                currentAnimation = input;
+
+                ownAnimator.Play(input, -1, 0);
+            }
         }
     }
 }

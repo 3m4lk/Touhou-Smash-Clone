@@ -21,7 +21,7 @@ public class CameraManager : MonoBehaviour
 
     public Vector2 cameraVertOffsetClamp;
 
-    public Transform testPoint;
+    public Transform Player2;
 
     public float dtfPercentage;
 
@@ -33,18 +33,18 @@ public class CameraManager : MonoBehaviour
     public Transform testMidPoint;
 
     public float smoothSpeed;
-    void FixedUpdate()
+    void Update()
     {
         setupCamPoints();
         cameraMovement();
     }
     void setupCamPoints()
     {
-        float lowestX = testPoint.position.x;
-        float lowestY = testPoint.position.y;
+        float lowestX = Player2.position.x;
+        float lowestY = Player2.position.y;
 
-        float highestX = testPoint.position.x;
-        float highestY = testPoint.position.y;
+        float highestX = Player2.position.x;
+        float highestY = Player2.position.y;
 
         for (int i = 0; i < cManager.Players.Length; i++)
         {

@@ -6,7 +6,7 @@ public class NameGeneratorButton : Editor
 {
     public override void OnInspectorGUI()
     {
-        PlayerMoveset moveset = (PlayerMoveset)target;
+        PlayerMoveset eTarget = (PlayerMoveset)target;
         base.OnInspectorGUI();
         if (GUILayout.Button("Test"))
         {
@@ -18,11 +18,24 @@ public class PlayerStatsButton : Editor
 {
     public override void OnInspectorGUI()
     {
-        PlayerStats stats = (PlayerStats)target;
+        PlayerStats eTarget = (PlayerStats)target;
         base.OnInspectorGUI();
         if (GUILayout.Button("TestDealDmg"))
         {
-            stats.dealDmg(stats.testDmg, stats.testKnockVec);
+            eTarget.dealDmg(eTarget.testDmg, eTarget.testKnockVec);
+        }
+    }
+}
+[CustomEditor(typeof(HitstunManager))]
+public class HitstunManagerButton : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        HitstunManager eTarget = (HitstunManager)target;
+        base.OnInspectorGUI();
+        if (GUILayout.Button("TestHitstun"))
+        {
+            eTarget.startHitstun(eTarget.testHitstunTime);
         }
     }
 }
