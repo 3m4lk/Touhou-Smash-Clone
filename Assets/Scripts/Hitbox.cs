@@ -6,7 +6,8 @@ public enum hbt
     Attack, // what deals damage; used for attacks of all kinds
     Invincible, // can be hit by attacks, but can't take damage nor knockback; used shortly after respawning, in final smashes or after grabbing Full Power (?)
     //Intangible, // (unused) can't be hit by attacks; used for dodges
-    Shield // Absorbs attacks; used for shield
+    Shield, // Absorbs attacks; used for shield
+    Null // ignore, tho mite be used for the future in some circumstances
 }
 
 public class Hitbox : MonoBehaviour
@@ -39,12 +40,22 @@ public class Hitbox : MonoBehaviour
 
         switch (hitboxType) // WOW!
         {
+            case hbt.Null:
+                return;
             case hbt.Hitbox:
                 break; // self
             case hbt.Attack:
                 if (attackCooldown != 0f) return;
 
+                print(collision.name);
                 if (collision.GetComponent<Hitbox>().hitboxType == hbt.Attack) return; // if other is also an attack; add more ignored hitboxes perhaps?
+                else if (collision.GetComponent<Hitbox>().hitboxType == hbt.Shield)
+                {
+                    print("<color=cyan>SAFGD IDFSAHDFAIHIHFDSPAAFDIHSPIHPFADSIHPFDSAIHPDFASIHPFDSA");
+                    collision.attachedRigidbody.GetComponent<PlayerStats>().damageShield(damage);
+                    attackCooldown = 0.3f;
+                    return;
+                }
 
                 collision.attachedRigidbody.GetComponent<PlayerStats>().dealDmg(damage, kbVector());
                 //attackCooldown = 0.01f * 4f; // 3x fixed time step
@@ -66,6 +77,7 @@ public class Hitbox : MonoBehaviour
 
     public void switchHitboxType(hbt input)
     {
+        //if (input != hbt.Hitbox) print("hitboxSwich: " + name);
         hitboxType = input;
 
         if (!GetComponent<SpriteRenderer>().enabled) return; // dev mode hitboxes
@@ -73,6 +85,9 @@ public class Hitbox : MonoBehaviour
         string desMaterial = default;
         switch (input)
         {
+            case hbt.Null:
+                desMaterial = "null";
+                break;
             case hbt.Hitbox:
                 desMaterial = "hitbox";
                 break;

@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public ControllerManager cManager;
+    //public ControllerManager cManager;
+
+    public MatchManager mManager;
 
     public Camera ownCam;
     private Vector3 lowestPoint;
@@ -46,24 +48,24 @@ public class CameraManager : MonoBehaviour
         float highestX = Player2.position.x;
         float highestY = Player2.position.y;
 
-        for (int i = 0; i < cManager.Players.Length; i++)
+        for (int i = 0; i < mManager.Players.Length; i++)
         {
-            if (cManager.Players[i].Character.transform.position.x < lowestX)
+            if (mManager.Players[i].transform.position.x < lowestX)
             {
-                lowestX = cManager.Players[i].Character.transform.position.x;
+                lowestX = mManager.Players[i].transform.position.x;
             }
-            if (cManager.Players[i].Character.transform.position.y < lowestY)
+            if (mManager.Players[i].transform.position.y < lowestY)
             {
-                lowestY = cManager.Players[i].Character.transform.position.y;
+                lowestY = mManager.Players[i].transform.position.y;
             }
 
-            if (cManager.Players[i].Character.transform.position.x > highestX)
+            if (mManager.Players[i].transform.position.x > highestX)
             {
-                highestX = cManager.Players[i].Character.transform.position.x;
+                highestX = mManager.Players[i].transform.position.x;
             }
-            if (cManager.Players[i].Character.transform.position.y > highestY)
+            if (mManager.Players[i].transform.position.y > highestY)
             {
-                highestY = cManager.Players[i].Character.transform.position.y;
+                highestY = mManager.Players[i].transform.position.y;
             }
 
             lowestX = Mathf.Clamp(lowestX, -arenaBounds.x, arenaBounds.x);

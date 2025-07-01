@@ -3274,7 +3274,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -3286,7 +3286,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -3298,7 +3298,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4021,6 +4021,42 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
+    classID: 4
+    script: {fileID: 0}
+    flags: 0
+  - serializedVersion: 2
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
+    classID: 4
+    script: {fileID: 0}
+    flags: 0
+  - serializedVersion: 2
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
+    classID: 4
+    script: {fileID: 0}
+    flags: 0
+  - serializedVersion: 2
+    curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
     path: Armature/torso/chest/neck
     classID: 4
     script: {fileID: 0}
@@ -4453,7 +4489,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4465,7 +4501,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4477,43 +4513,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R
-    classID: 4
-    script: {fileID: 0}
-    flags: 0
-  - serializedVersion: 2
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
-    classID: 4
-    script: {fileID: 0}
-    flags: 0
-  - serializedVersion: 2
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
-    classID: 4
-    script: {fileID: 0}
-    flags: 0
-  - serializedVersion: 2
-    curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
-    path: Armature/torso/chest/arm.R/forearm.R/hand.R/watch (1)
+    path: Armature/torso/chest/arm.R/forearm.R/hand.R/daggerHand
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4555,4 +4555,11 @@ AnimationClip:
     flags: 0
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: changeFace
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

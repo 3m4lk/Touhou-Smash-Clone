@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -8,6 +7,8 @@ public class PlayerStats : MonoBehaviour
     public PlayerAnimationManager animManager;
 
     public Hitbox ownHitbox;
+
+    public FaceManager ownFace;
 
 
     public bool isAlive;
@@ -28,8 +29,8 @@ public class PlayerStats : MonoBehaviour
     [Space]
     public float invulnerability;
 
+    public int stockAmount;
     public float damage;
-    public TMP_Text damageText;
 
     public float maxKnockStrength;
 
@@ -73,6 +74,11 @@ public class PlayerStats : MonoBehaviour
 
     private bool unstunFaster = false;
 
+    private void Start()
+    {
+        isAlive = true;
+        match.updateDamageText(this);
+    }
     private void Update()
     {
         if (moveset && moveset.ownController.devMode && Input.GetKeyDown(KeyCode.R)) kill();
@@ -92,7 +98,7 @@ public class PlayerStats : MonoBehaviour
                     replaceOnStage();
                 }
 
-                platformStallCooldown = Mathf.Max(platformStallCooldown - Time.fixedDeltaTime, -10f);
+                platformStallCooldown = Mathf.Max(platformStallCooldown - Time.fixedDeltaTime, -6f);
 
                 // if below 0 (after 2 sec.), enable respawning on any input
 
@@ -116,18 +122,17 @@ public class PlayerStats : MonoBehaviour
             }
             isStunned = (stunProgress != 0f);
 
-            ownHitbox.switchHitboxType(hbt.Invincible);
             if (invulnerability == 0f)
             {
-                ownHitbox.switchHitboxType(hbt.Hitbox);
+                if (ownHitbox.hitboxType == hbt.Invincible) ownHitbox.switchHitboxType(hbt.Hitbox);
                 /*if (isStunned && stunProgress > 0f)
                 {
                     //ownHitbox.switchHitboxType(hbt.Invincible);
                 } //*/ // why? // 8w i have an idea//*/ // ON KNOCK NOT STUN YOU IMBECILE
 
-                if (isKnocked && knockProgress > 0f && moveset.isGrounded)
+                if (isKnocked && knockProgress > 0f && invulnerability == 0f && moveset.isGrounded)
                 {
-                    ownHitbox.switchHitboxType(hbt.Invincible);
+                    makeInvuln(1f);
                 }
             }
 
@@ -135,7 +140,7 @@ public class PlayerStats : MonoBehaviour
 
             shieldPunishmentWindow = Mathf.Max(shieldPunishmentWindow - Time.fixedDeltaTime, 0f);
 
-            invulnerability = Mathf.Max(invulnerability - Time.fixedDeltaTime, 0f);
+            invulnerability = Mathf.Max(invulnerability - Time.fixedDeltaTime, 0f); // deduc
 
             shieldDire = 0.7f; // higher shield regen time to compensate for spam punishment
             if (shieldMode) shieldDire = -1f;
@@ -148,7 +153,6 @@ public class PlayerStats : MonoBehaviour
 
             if (shieldProgress == 0f)
             {
-                print("<color=red>SHIELDBREAK");
                 shieldBreak();
             }
 
@@ -159,6 +163,8 @@ public class PlayerStats : MonoBehaviour
     {
         if (!isStunned)
         {
+            print("<color=red>SHIELDBREAK");
+            ownHitbox.switchHitboxType(hbt.Hitbox);
             //ptinr("sb");
             // >ptinr
 
@@ -172,11 +178,13 @@ public class PlayerStats : MonoBehaviour
     public void dealDmg(float amount, Vector2 knockVec) // set up kb later
     {
         damage = Mathf.Clamp(damage + amount, 0f, 999.9f);
-        updateDamageText();
+        match.updateDamageText(this, amount); // when actually received damage
 
         //Vector2 hitKb = testKnockVec * 10f * Mathf.Lerp(1f, maxKnockStrength, damage / 999.9f);
 
         Vector2 hitKb = knockVec * 10f * Mathf.Lerp(1f, maxKnockStrength, damage / 999.9f);
+
+        ownFace.hurt();
 
         //moveset.ownRb.AddForce(hitKb, ForceMode2D.Impulse);
 
@@ -191,6 +199,10 @@ public class PlayerStats : MonoBehaviour
         // very weak kb attacks won't apply knock
         if (hitKb.magnitude > kbKnockThreshold.x * 10f)
         {
+            stunProgress = 0;
+            isStunned = false;
+            animManager.playAnimation("idle");
+
             // cancel recovery fall animation
             if (!moveset.isGrounded)
             {
@@ -237,7 +249,19 @@ public class PlayerStats : MonoBehaviour
         platformStallCooldown = platformStallTime;
         toggleShield(false);
         shieldMode = false;
+        ownHitbox.switchHitboxType(hbt.Hitbox);
         shield.gameObject.SetActive(false);
+
+        stockAmount--;
+        if (stockAmount == 0)
+        {
+            print("SEND TO MATCHMANAGER INFO BOUT DEATH");
+        }
+
+        if (GetComponent<AIController>())
+        {
+            GetComponent<AIController>().loseStockBehavior(stockAmount);
+        }
     }
     public void respawn()
     {
@@ -254,7 +278,7 @@ public class PlayerStats : MonoBehaviour
 
             if (invulnerability > 4f)
             {
-                invulnerability = 3f;
+                makeInvuln(3f, true);
             } // so Player doesn't get a shitton of invulnerab when stepping right outta the platform
         }
     }
@@ -269,16 +293,15 @@ public class PlayerStats : MonoBehaviour
         knockProgress = 0;
 
         damage = 0;
-        updateDamageText();
+
+        makeInvuln(10f);
+
+        match.updateDamageText(this);
         animManager.ownAnimator.Play("idle");
         //animManager.playAnimation("idle");
         respawnPlatformIndex = match.pickRespawnPlatform();
         moveset.ownRb.position = match.respawnLocations[respawnPlatformIndex].position;
         // place Player on resp platform
-    }
-    void updateDamageText()
-    {
-        damageText.text = moveset.moveset.name + "\n<size=64><color=#FFFFFF><b>" + damage.ToString("0.0") + "%";
     }
     public void toggleShield(bool mode)
     {
@@ -289,9 +312,11 @@ public class PlayerStats : MonoBehaviour
         if (mode)
         {
             shield.gameObject.SetActive(true);
+            ownHitbox.switchHitboxType(hbt.Shield);
         }
         else
         {
+            ownHitbox.switchHitboxType(hbt.Hitbox);
             if (shieldPunishmentWindow > 0f)
             {
                 //shieldProgress = Mathf.Clamp(shieldProgress - 1.2f, 0.03f, shieldMaxHealth); // punishment for shieldspamming
@@ -305,5 +330,21 @@ public class PlayerStats : MonoBehaviour
     {
         isKnocked = false;
         moveset.vanityAnim("idle");
+    }
+    public void makeInvuln(float duration, bool force = false)
+    {
+        invulnerability = Mathf.Max(invulnerability, duration);
+        if (force) invulnerability = duration;
+        if (invulnerability != 0f) ownHitbox.switchHitboxType(hbt.Invincible);
+    }
+    public void damageShield(float damage)
+    {
+        print("SHIELDDAMAGE: " + (damage / 70f));
+        shieldProgress = Mathf.Max(shieldProgress - (damage / 20f), 0f);
+        if (shieldProgress == 0f)
+        {
+            shieldMode = false;
+            shieldBreak();
+        }
     }
 }

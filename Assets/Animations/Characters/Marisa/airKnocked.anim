@@ -4793,7 +4793,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso/chest/arm.L/forearm.L/hand.L
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4805,7 +4805,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso/chest/arm.L/forearm.L/hand.L
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -4817,7 +4817,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso/chest/arm.L/forearm.L/hand.L
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -5081,7 +5081,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso/chest/arm.L/forearm.L/hand.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -5093,7 +5093,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso/chest/arm.L/forearm.L/hand.L
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -5105,10 +5105,17 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso/chest/arm.L/forearm.L/hand.L
     classID: 4
     script: {fileID: 0}
     flags: 0
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: changeFace
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 3
+    messageOptions: 0

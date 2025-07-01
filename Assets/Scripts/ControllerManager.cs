@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+
 [System.Serializable]
 public class axs
 {
@@ -64,21 +65,41 @@ public class ControllerManager : MonoBehaviour
     }
     private void Update()
     {
-        if (tillDevModeOff > 0f)
+        if (!devMode)
         {
-            if (Input.GetKeyDown(devModeCount + ""))
+            if (tillDevModeOff > 0f)
             {
-                if (devModeCount == 9)
+                if (Input.GetKeyDown(devModeCount + ""))
                 {
-                    devMode = true;
-                    devStart();
-                    tillDevModeOff = 0;
-                    toggleVisuals(true);
-                    print("<color=magenta>WELCOME TO DEV MODE!");
+                    if (devModeCount == 9)
+                    {
+                        devMode = true;
+                        devStart();
+                        tillDevModeOff = 0;
+                        toggleVisuals(true);
+                        print("<color=magenta>WELCOME TO DEV MODE!");
+                    }
+                    devModeCount++;
                 }
-                devModeCount++;
             }
+            else
+            {
+                if (Input.GetKeyDown(devModeCount + ""))
+                {
+                    if (devModeCount == 9)
+                    {
+                        devMode = true;
+                        devStart();
+                        tillDevModeOff = 0;
+                        toggleVisuals(true);
+                        print("<color=magenta>WELCOME TO DEV MODE!");
+
+                    }
+                    devModeCount++;
+                }
+            } // remove in final
         }
+
         tillDevModeOff = Mathf.Max(tillDevModeOff - Time.deltaTime, 0f);
 
         for (int i = 0; i < Players.Length; i++)

@@ -34,6 +34,7 @@ public class mvst
     [Tooltip("idk what for but SURELY this could be useful for sum?")]
     public string fullName;
     public string name;
+    public string ownColor = "FFFFFF";
 
     [Space]
     public string title;
@@ -60,6 +61,8 @@ public class PlayerMoveset : MonoBehaviour
     public mvst moveset;
     public ControllerManager ownController;
     public PlayerStats ownStats;
+
+    public int PlayerIndex;
 
     private string lastMove; // for stale
     private int staleCount;
@@ -427,7 +430,11 @@ public class PlayerMoveset : MonoBehaviour
                     vanityAnim("idle");
                 }
 
-                animManager.switchDirection(ownController.Players[0].inputAxes[0].value, false, true); // refresh facing direction
+                float switchDireVal = -1;
+                if (GetComponent<AIController>() && GetComponent<AIController>().enabled) switchDireVal = GetComponent<AIController>().inputAxis.x;
+                else switchDireVal = ownController.Players[0].inputAxes[0].value; // change l8r to ownController.Players[PlayerIndex].inputAxes[0].value
+
+                animManager.switchDirection(switchDireVal, false, true);
                 //print("DIRE: " + ownController.Players[0].inputAxes[0].value);
 
                 if (ownStats.isKnocked) ownStats.knockProgress = 1.5f; // knockState for 2 secs when knocked touches floor
@@ -520,6 +527,7 @@ public class PlayerMoveset : MonoBehaviour
         duckCollisions(false);
 
         ownStats.shieldMode = !true; // :)
+        ownStats.ownHitbox.switchHitboxType(hbt.Hitbox);
 
         // idle
         // walk

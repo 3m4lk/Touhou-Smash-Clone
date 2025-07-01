@@ -4,7 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/mainDemo.unity
+    guid: b281110bbe5aced44874e1536819d529
+  - enabled: 1
+    path: Assets/Scenes/Marisa.unity
+    guid: a40db00fdd5c7e54fba869f509d912f5
+  - enabled: 1
+    path: Assets/Scenes/Sakuya.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Keiyoke.unity
+    guid: b12ca2706fb15fc409052567c4518b6f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0

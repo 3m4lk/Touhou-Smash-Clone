@@ -39,3 +39,16 @@ public class HitstunManagerButton : Editor
         }
     }
 }
+[CustomEditor(typeof(PlayerSkinApplier))]
+public class PlayerSkinApplierrButton : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        PlayerSkinApplier eTarget = (PlayerSkinApplier)target;
+        base.OnInspectorGUI();
+        if (GUILayout.Button("skinTest"))
+        {
+            eTarget.applySkin(eTarget.testSkin);
+        }
+    }
+}
