@@ -17,7 +17,7 @@ public class PlayerAnimationManager : MonoBehaviour
     private float turnProg;
     private float progDire;
 
-    public Animator ownAnimator;
+    //public Animator ownAnimator;
     public string currentAnimation;
 
     public string currentTag;
@@ -35,7 +35,7 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     public void switchDirection(float input, bool ignoreAirCheck = false, bool isRecovery = false)
     {
-        if ((input == 0 || !moveset.isGrounded && !ignoreAirCheck || moveset.duckState || ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) && !isRecovery || moveset.ownStats.isKnocked || moveset.ownStats.isStunned) return;
+        if ((input == 0 || !moveset.isGrounded && !ignoreAirCheck || moveset.duckState /*|| ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")*/) && !isRecovery || moveset.ownStats.isKnocked || moveset.ownStats.isStunned) return;
         //print("direChange");
 
         if (lookDire != Mathf.Sign(input) || ignoreAirCheck)
@@ -58,7 +58,7 @@ public class PlayerAnimationManager : MonoBehaviour
         //currentTag = ownAnimator.GetCurrentAnimatorStateInfo(0).tagHash + "";
         //print("play anim: " + input);
 
-        if (!ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") || surpassNoMove)
+        if (/*!ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") || */surpassNoMove)
         {
             if (!moveset.duckState)
             {
@@ -68,19 +68,13 @@ public class PlayerAnimationManager : MonoBehaviour
 
                 // get some solution for replaying alr playing animations
 
-                ownAnimator.Play(input, -1, 0);
-
-                //ownAnimator.Play("input", 0, 0f);
-                /*ownAnimator.StopPlayback();
-                ownAnimator.enabled = false;
-                ownAnimator.enabled = true;
-                ownAnimator.Play(input);//*/
+                //ownAnimator.Play(input, -1, 0);
             }
             else
             {
                 currentAnimation = input;
 
-                ownAnimator.Play(input, -1, 0);
+                //ownAnimator.Play(input, -1, 0);
             }
         }
     }

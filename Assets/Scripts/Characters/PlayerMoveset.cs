@@ -80,6 +80,10 @@ public class PlayerMoveset : MonoBehaviour
 
     [Space]
     public bool isGrounded;
+
+    public bool isWalking; // this one too
+    public bool isRunning; // do it
+
     public LayerMask groundMask;
     public Vector2 gcScale;
     public Transform gcPosition;
