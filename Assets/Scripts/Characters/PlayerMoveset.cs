@@ -163,7 +163,7 @@ public class PlayerMoveset : MonoBehaviour
                 break;
 
             case "mJ":
-                if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
+                //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
                 duckCollisions(false);
                 desJump = mode;
                 break; // Jump
@@ -171,7 +171,7 @@ public class PlayerMoveset : MonoBehaviour
             case "mD":
                 if (isGrounded)
                 {
-                    if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
+                    //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
 
                     duckCollisions(mode);
 
@@ -206,22 +206,22 @@ public class PlayerMoveset : MonoBehaviour
                         {
                             case -1:
                                 //print("dSmash");
-                                animManager.playAnimation("x_downSmash");
+                                //animManager.playAnimation("x_downSmash");
                                 break;
                             case 1:
                                 //print("uSmash");
-                                animManager.playAnimation("x_upSmash");
+                                //animManager.playAnimation("x_upSmash");
                                 break;
                             case 0:
                                 switch (desMovementVector.x)
                                 {
                                     default:
                                         //print("sSmash");
-                                        animManager.playAnimation("x_sideSmash");
+                                        //animManager.playAnimation("x_sideSmash");
                                         break;
                                     case 0:
                                         //print("jab");
-                                        animManager.playAnimation("x_jab");
+                                        //animManager.playAnimation("x_jab");
                                         break;
                                 }
                                 break;
@@ -234,11 +234,11 @@ public class PlayerMoveset : MonoBehaviour
                     {
                         case -1:
                             //print("dAir");
-                            animManager.playAnimation("x_dair");
+                            //animManager.playAnimation("x_dair");
                             break;
                         case 1:
                             //print("uAir");
-                            animManager.playAnimation("x_uair");
+                            //animManager.playAnimation("x_uair");
                             break;
                         case 0:
                             switch (desMovementVector.x)
@@ -246,11 +246,11 @@ public class PlayerMoveset : MonoBehaviour
                                 default:
                                     //print("sAir");
                                     animManager.switchDirection(desMovementVector.x, true);
-                                    animManager.playAnimation("x_sair");
+                                    //animManager.playAnimation("x_sair");
                                     break;
                                 case 0:
                                     //print("nAir");
-                                    animManager.playAnimation("x_nair");
+                                    //animManager.playAnimation("x_nair");
                                     break;
                             }
                             break;
@@ -266,17 +266,17 @@ public class PlayerMoveset : MonoBehaviour
                     duckCollisions(false);
                     if (desMovementVector.y == 1)
                     {
-                        if (!animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack"))
+                        if (true) // !animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")
                         {
                             //print("recovery");
                             animManager.switchDirection(desMovementVector.x, true);
-                            animManager.playAnimation("x_recovery");
+                            //animManager.playAnimation("x_recovery");
                             forceJump(default, moveset.recoveryForce);
                             jumpsRemaining = 0;
                         } // idfc, this is a check if u can even do recovery
                         return;
                     }
-                    animManager.playAnimation("x_shot");
+                    //animManager.playAnimation("x_shot");
                     //print("shot");
                 }
                 break;   // Shot
@@ -286,7 +286,7 @@ public class PlayerMoveset : MonoBehaviour
                     duckCollisions(false);
                     if (mode)
                     {
-                        if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
+                        //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
 
                         //print("shield");
                         vanityAnim("x_shield");
@@ -303,7 +303,7 @@ public class PlayerMoveset : MonoBehaviour
                     duckCollisions(false);
                     //print("taunt");
                     //vanityAnim("taunt");
-                    animManager.playAnimation("taunt");
+                    //animManager.playAnimation("taunt");
                     return;
                 }
                 break;  // Taunt
@@ -362,7 +362,7 @@ public class PlayerMoveset : MonoBehaviour
 
     void movement()
     {
-        if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && isGrounded || ownStats.shieldMode || ownStats.isKnocked && isGrounded || ownStats.isStunned) return;
+        //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && isGrounded || ownStats.shieldMode || ownStats.isKnocked && isGrounded || ownStats.isStunned) return;
         vertVelo = ownRb.linearVelocityY;
 
         //ownRb.AddForce(desMovementVector * moveset.speed, ForceMode2D.)
@@ -377,7 +377,7 @@ public class PlayerMoveset : MonoBehaviour
         //print("movement");
         Vector2 horMovVec = desMovementVector;
 
-        animManager.ownAnimator.SetBool("isWalking", desMovementVector.x > 0.01f);
+        //animManager.ownAnimator.SetBool("isWalking", desMovementVector.x > 0.01f);
 
         horVelo = ownRb.linearVelocityX;
 
@@ -413,7 +413,7 @@ public class PlayerMoveset : MonoBehaviour
 
         if (isGrounded != oldGrounded)
         {
-            animManager.ownAnimator.SetBool("isGrounded", isGrounded);
+            //animManager.ownAnimator.SetBool("isGrounded", isGrounded);
 
             if (isGrounded)
             {
@@ -515,17 +515,17 @@ public class PlayerMoveset : MonoBehaviour
     {
         if (input == default)
         {
-            animManager.ownAnimator.SetBool("isRunning", false);
+            //animManager.ownAnimator.SetBool("isRunning", false);
             sprintMultiplier = 1f;
             return;
         } // unsprint
-        animManager.ownAnimator.SetBool("isRunning", true);
+        //animManager.ownAnimator.SetBool("isRunning", true);
         sprintMultiplier = input;
     }
 
     public void vanityAnim(string input)
     {
-        if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && input != "x_shield" && input != "x_shieldRelease") return;
+        //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && input != "x_shield" && input != "x_shieldRelease") return;
         string outputAnim = default;
 
         duckCollisions(false);
@@ -617,11 +617,11 @@ public class PlayerMoveset : MonoBehaviour
 
             if (input == "x_shieldRelease" && !ownStats.isKnocked)
             {
-                animManager.playAnimation(outputAnim, true);
+                //animManager.playAnimation(outputAnim, true);
                 return;
             }
 
-            animManager.playAnimation(outputAnim);
+            //animManager.playAnimation(outputAnim);
         }
     }
 }

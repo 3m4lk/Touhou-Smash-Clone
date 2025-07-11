@@ -40,6 +40,8 @@ public class AnimationManager : MonoBehaviour
 
     private void Update()
     {
+        // add a check for ducking
+
         if (true) // if isn't using a move or taunting (add later)
         {
             if (ownPlayer.isGrounded)

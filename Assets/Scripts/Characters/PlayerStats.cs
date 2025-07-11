@@ -118,7 +118,7 @@ public class PlayerStats : MonoBehaviour
             {
                 // boot out of stun animation
                 //print("DESTUN ANIM");
-                animManager.playAnimation("idle");
+                //animManager.playAnimation("idle");
             }
             isStunned = (stunProgress != 0f);
 
@@ -201,12 +201,12 @@ public class PlayerStats : MonoBehaviour
         {
             stunProgress = 0;
             isStunned = false;
-            animManager.playAnimation("idle");
+            //animManager.playAnimation("idle");
 
             // cancel recovery fall animation
             if (!moveset.isGrounded)
             {
-                animManager.playAnimation("idleAir", true);
+                //animManager.playAnimation("idleAir", true);
             }
             isKnocked = false; // attacks above minimum strength disable knock...
 
@@ -215,7 +215,7 @@ public class PlayerStats : MonoBehaviour
                 isKnocked = true; // ...unless strength exceeds another threshold
                 knockProgress = knockTime;
                 print("<color=green>Apply Knock");
-                animManager.playAnimation("airKnocked", true);
+                //animManager.playAnimation("airKnocked", true);
             }
             else
             {
@@ -267,7 +267,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (!isAlive)
         {
-            animManager.ownAnimator.Play("idleAir");
+            //animManager.ownAnimator.Play("idleAir");
             isAlive = true;
             respawnOnInput = false;
             moveset.ownRb.bodyType = RigidbodyType2D.Dynamic;
@@ -297,7 +297,7 @@ public class PlayerStats : MonoBehaviour
         makeInvuln(10f);
 
         match.updateDamageText(this);
-        animManager.ownAnimator.Play("idle");
+        //animManager.ownAnimator.Play("idle");
         //animManager.playAnimation("idle");
         respawnPlatformIndex = match.pickRespawnPlatform();
         moveset.ownRb.position = match.respawnLocations[respawnPlatformIndex].position;
