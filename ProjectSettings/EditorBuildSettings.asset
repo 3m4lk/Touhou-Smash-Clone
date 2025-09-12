@@ -18,5 +18,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Keiyoke.unity
     guid: b12ca2706fb15fc409052567c4518b6f
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: dc4430b67b5dd8c45b93ba29af44972a, type: 3}
   m_UseUCBPForAssetBundles: 0

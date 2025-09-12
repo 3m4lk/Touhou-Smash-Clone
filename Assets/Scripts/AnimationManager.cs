@@ -16,18 +16,23 @@ public class AnimationManager : MonoBehaviour
     // aBBBBCCC
 
     // a - input
-    //      d - no input
+    //      d - no input (default)
     //      m - movement (WASD)
     //      x - action (JKLT Space)
 
     // BBBB - animation name
-    //      NAttack - jab / nair
-    //      UAttack // up smash / air
-    //      SAttack // side smash / air
-    //      DAttack // down smash / air
+    //      NSmash - jab
+    //      USmash - up smash
+    //      SSmash - side smash
+    //      DSmash - down smash
+
+    //      NAir - neutral air
+    //      UAir - up air
+    //      SAir - side air
+    //      DAir - down air
 
     //      NShot - shot (can add directional specials at a later point in development)
-    //      UShot - recovery
+    //      Recovery - recovery
 
     // CCC - airborne
     //      Air - airborne

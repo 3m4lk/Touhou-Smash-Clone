@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class axs
@@ -13,10 +14,7 @@ public class axs
 [System.Serializable]
 public class inpt
 {
-    public string name;
-    public string internalName;
-    public string[] keys;
-    public bool mode;
+    //public InputActionReference 
 }
 [System.Serializable]
 public class cntrls
@@ -46,8 +44,11 @@ public class ControllerManager : MonoBehaviour
 
     private void Awake()
     {
-        tillDevModeOff = 13.37f;
-        devStart();
+        if (false)
+        {
+            tillDevModeOff = 13.37f;
+            devStart();
+        }
     }
     void devStart()
     {
@@ -65,73 +66,33 @@ public class ControllerManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!devMode)
+        if (false)
         {
-            if (tillDevModeOff > 0f)
+            if (!devMode)
             {
-                if (Input.GetKeyDown(devModeCount + ""))
+                if (tillDevModeOff > 0f)
                 {
-                    if (devModeCount == 9)
+                    if (Input.GetKeyDown(devModeCount + ""))
                     {
-                        devMode = true;
-                        devStart();
-                        tillDevModeOff = 0;
-                        toggleVisuals(true);
-                        print("<color=magenta>WELCOME TO DEV MODE!");
-                    }
-                    devModeCount++;
-                }
-            }
-            else
-            {
-                if (Input.GetKeyDown(devModeCount + ""))
-                {
-                    if (devModeCount == 9)
-                    {
-                        devMode = true;
-                        devStart();
-                        tillDevModeOff = 0;
-                        toggleVisuals(true);
-                        print("<color=magenta>WELCOME TO DEV MODE!");
-
-                    }
-                    devModeCount++;
-                }
-            } // remove in final
-        }
-
-        tillDevModeOff = Mathf.Max(tillDevModeOff - Time.deltaTime, 0f);
-
-        for (int i = 0; i < Players.Length; i++)
-        {
-            for (int a = 0; a < Players[i].inputs.Length; a++)
-            {
-                inpt currInput = Players[i].inputs[a];
-                for (int b = 0; b < currInput.keys.Length; b++)
-                {
-                    if (Input.GetKeyDown(currInput.keys[b]) && !Players[i].inputs[a].mode)
-                    {
-                        Players[i].inputs[a].mode = true;
-                        Players[i].Character.processInput(currInput.internalName, true);
-                        devKeyCheck();
-                    }
-                    else if (Input.GetKeyUp(currInput.keys[b]) && Players[i].inputs[a].mode)
-                    {
-                        Players[i].inputs[a].mode = false;
-                        Players[i].Character.processInput(currInput.internalName, false);
-                        devKeyCheck();
+                        if (devModeCount == 9)
+                        {
+                            devMode = true;
+                            devStart();
+                            tillDevModeOff = 0;
+                            toggleVisuals(true);
+                            print("<color=magenta>WELCOME TO DEV MODE!");
+                        }
+                        devModeCount++;
                     }
                 }
             }
-            for (int a = 0; a < Players[0].inputAxes.Length; a++)
-            {
-                Players[i].Character.processAxis(Players[0].inputAxes[a].name, Players[0].inputAxes[a].value);
-            }
+
+            tillDevModeOff = Mathf.Max(tillDevModeOff - Time.deltaTime, 0f);
         }
     }
     void devKeyCheck()
     {
-        axisValueUpdate();
+        /*axisValueUpdate();
         if (devMode)
         {
             d_inputs.text = null;
@@ -150,6 +111,7 @@ public class ControllerManager : MonoBehaviour
                 }
             }
         }
+        //*/
     }
     public void axisValueUpdate()
     {
