@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 [System.Serializable]
 public class move
 {
@@ -113,8 +114,6 @@ public class PlayerMoveset : MonoBehaviour
     private float sprintPushCooldown;
 
     private string lastVanityAnim;
-
-    private bool culpritCheck;
 
     private void Awake()
     {
@@ -308,29 +307,11 @@ public class PlayerMoveset : MonoBehaviour
                 }
                 break;  // Taunt
         }
-    }
+    } // delete this
     public void duckCollisions(bool mode)
     {
         collisions[0].SetActive(!mode);
         collisions[1].SetActive(mode);
-    }
-    public void processAxis(string input, float value)
-    {
-        switch (input)
-        {
-            default:
-                break;
-            case "horizontal":
-                desMovementVector.x = 0;
-                if (!duckState)
-                {
-                    desMovementVector.x = value;
-                }
-                break;
-            case "vertical":
-                desMovementVector.y = value;
-                break;
-        }
     }
 
     private void FixedUpdate()
@@ -436,7 +417,7 @@ public class PlayerMoveset : MonoBehaviour
 
                 float switchDireVal = -1;
                 if (GetComponent<AIController>() && GetComponent<AIController>().enabled) switchDireVal = GetComponent<AIController>().inputAxis.x;
-                else switchDireVal = ownController.Players[0].inputAxes[0].value; // change l8r to ownController.Players[PlayerIndex].inputAxes[0].value
+                // else switchDireVal = ownController.Players[0].inputAxes[0].value; // change l8r to ownController.Players[PlayerIndex].inputAxes[0].value
 
                 animManager.switchDirection(switchDireVal, false, true);
                 //print("DIRE: " + ownController.Players[0].inputAxes[0].value);
@@ -597,9 +578,6 @@ public class PlayerMoveset : MonoBehaviour
             }
         }
 
-        //if (culpritCheck) print("<color=red>GOTCHA BITCH: " + input);
-        culpritCheck = false;
-
         if (ownStats.isStunned)
         {
             outputAnim = "airKnocked";
@@ -613,8 +591,6 @@ public class PlayerMoveset : MonoBehaviour
         {
             lastVanityAnim = outputAnim;
 
-            if (outputAnim == "jump") culpritCheck = true;
-
             if (input == "x_shieldRelease" && !ownStats.isKnocked)
             {
                 //animManager.playAnimation(outputAnim, true);
@@ -623,5 +599,14 @@ public class PlayerMoveset : MonoBehaviour
 
             //animManager.playAnimation(outputAnim);
         }
+    }
+    public void contrInput(InputAction.CallbackContext obj)
+    {
+        print(obj.action.name + " || " + obj.action.triggered);
+        //print(obj.action.name + ": " + obj.action.ReadValue<Vector2>());
+    }
+    public void disconnected()
+    {
+
     }
 }

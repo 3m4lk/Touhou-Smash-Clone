@@ -19,6 +19,7 @@ public class PlayerSkinApplier : MonoBehaviour
     }
     private void Update()
     {
+        return;
         if (Input.GetKeyDown("u"))
         {
             if (skinName)

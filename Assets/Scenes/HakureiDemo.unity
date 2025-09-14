@@ -1670,7 +1670,7 @@ MonoBehaviour:
     startStepMult: 1
     sprintStepMult: 2
     recoveryForce: {x: 0.05, y: 3}
-  ownController: {fileID: 753094741}
+  ownController: {fileID: 0}
   ownStats: {fileID: 199770130}
   PlayerIndex: 0
   ownRb: {fileID: 199770127}
@@ -1817,37 +1817,133 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: fa842eb9-0858-47de-9546-e3e6412f9a1b
     m_ActionName: 'Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/a,/Keyboard/s,/Keyboard/d]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 965359bf-a4c1-4a21-b8c1-28c6a7a1191d
     m_ActionName: Player/Jump
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 44a00dbb-a05a-449c-829b-1d4eed660126
     m_ActionName: Player/Attack
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 8f755d47-bb9e-4781-8d2e-9481d541b658
     m_ActionName: Player/Special
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 917408c6-9d44-4587-b685-ae23ebb1cbd3
-    m_ActionName: Player/Smash
-  - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b7050d90-e890-4081-86b1-698e644dfcc4
     m_ActionName: Player/Shield
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: cd9beacf-0897-43f8-91a9-242e6e238046
     m_ActionName: Player/Taunt
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 462f5cad-8e02-4b9a-a265-11b57c153ff0
     m_ActionName: Player/Pause
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 199770129}
+        m_TargetAssemblyTypeName: PlayerMoveset, Assembly-CSharp
+        m_MethodName: contrInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 617f524f-9380-46c5-8b83-8d3ad00939e8
+    m_ActionName: 'Player/DirectionSmash[/XInputControllerWindows/rightStick]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2272,6 +2368,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f06b25e1daebffb4e81084b4ff178d82, type: 3}
       propertyPath: m_Name
       value: Remilia
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f06b25e1daebffb4e81084b4ff178d82, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5661,112 +5761,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &753094740
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 753094742}
-  - component: {fileID: 753094741}
-  m_Layer: 0
-  m_Name: ControllerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &753094741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 753094740}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a22a7fbef8a3a44cac0dd5d67571ff5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Players:
-  - name: Player A
-    Character: {fileID: 199770129}
-    animation: {fileID: 199770128}
-    inputs:
-    - name: Left
-      internalName: mL
-      keys:
-      - a
-      mode: 0
-    - name: Right
-      internalName: mR
-      keys:
-      - d
-      mode: 0
-    - name: Up
-      internalName: mU
-      keys:
-      - w
-      mode: 0
-    - name: Down
-      internalName: mD
-      keys:
-      - s
-      mode: 0
-    - name: Jump
-      internalName: mJ
-      keys:
-      - space
-      mode: 0
-    - name: Attack
-      internalName: attack
-      keys:
-      - j
-      mode: 0
-    - name: Shot
-      internalName: shot
-      keys:
-      - k
-      mode: 0
-    - name: Shield
-      internalName: shield
-      keys:
-      - l
-      mode: 0
-    - name: Taunt
-      internalName: taunt
-      keys:
-      - t
-      mode: 0
-    inputAxes:
-    - name: horizontal
-      buttonPositive: 1
-      buttonNegative: 0
-      value: 0
-    - name: vertical
-      buttonPositive: 2
-      buttonNegative: 3
-      value: 0
-  devMode: 0
-  devUI: {fileID: 76665718}
-  d_inputs: {fileID: 187808872}
---- !u!4 &753094742
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 753094740}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1764248835}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &768098522
 GameObject:
   m_ObjectHideFlags: 0
@@ -6565,7 +6559,7 @@ MonoBehaviour:
     startStepMult: 1.2
     sprintStepMult: 3
     recoveryForce: {x: 1, y: 1.4}
-  ownController: {fileID: 753094741}
+  ownController: {fileID: 0}
   ownStats: {fileID: 865025267}
   PlayerIndex: 0
   ownRb: {fileID: 865025270}
@@ -9184,7 +9178,7 @@ MonoBehaviour:
     startStepMult: 1.2
     sprintStepMult: 3
     recoveryForce: {x: 1, y: 1.4}
-  ownController: {fileID: 753094741}
+  ownController: {fileID: 0}
   ownStats: {fileID: 1259780588}
   PlayerIndex: 1
   ownRb: {fileID: 1259780585}
@@ -10163,7 +10157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NotificationBehavior: 0
-  m_MaxPlayerCount: 4
+  m_MaxPlayerCount: 3
   m_AllowJoining: 1
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:
@@ -10184,7 +10178,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 0}
+  m_PlayerPrefab: {fileID: 199770126}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -10575,6 +10569,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 502232613a895694abf49fd0973d2659, type: 3}
       propertyPath: m_Name
       value: Blake
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 502232613a895694abf49fd0973d2659, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11993,7 +11991,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 753094742}
   - {fileID: 87412667}
   - {fileID: 1919147743}
   - {fileID: 1697126514}
@@ -14025,6 +14022,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reimu
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c1becca6b9e45ac4790b772cfaab3227, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15555,6 +15556,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 316028334}
+  - {fileID: 1764248835}
   - {fileID: 1975535355}
   - {fileID: 89664614}
   - {fileID: 963194228}
@@ -15563,7 +15565,6 @@ SceneRoots:
   - {fileID: 865025265}
   - {fileID: 1259780589}
   - {fileID: 199770131}
-  - {fileID: 1764248835}
   - {fileID: 892762167}
   - {fileID: 143311786}
   - {fileID: 70630970}

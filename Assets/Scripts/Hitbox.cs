@@ -26,7 +26,7 @@ public class Hitbox : MonoBehaviour
     private float attackCooldown;
     private void Awake()
     {
-        if (GetComponent<SpriteRenderer>()) GetComponent<SpriteRenderer>().enabled = GameObject.Find("ControllerManager").GetComponent<ControllerManager>().devMode;
+        if (GetComponent<SpriteRenderer>()) GetComponent<SpriteRenderer>().enabled = false; // GameObject.Find("ControllerManager").GetComponent<ControllerManager>().devMode;
     }
     private void FixedUpdate()
     {

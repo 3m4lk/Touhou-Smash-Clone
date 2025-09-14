@@ -5,6 +5,7 @@ public class buttons : MonoBehaviour
 {
     public void Update()
     {
+        return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             moveToScene(0);

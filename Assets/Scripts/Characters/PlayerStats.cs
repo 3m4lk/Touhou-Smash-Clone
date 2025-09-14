@@ -79,12 +79,12 @@ public class PlayerStats : MonoBehaviour
         isAlive = true;
         match.updateDamageText(this);
     }
-    private void Update()
+    /*private void Update()
     {
         if (moveset && moveset.ownController.devMode && Input.GetKeyDown(KeyCode.R)) kill();
 
         if (Input.anyKeyDown) unstunFaster = true;
-    }
+    }//*/
     private void FixedUpdate()
     {
         if (!isAlive)

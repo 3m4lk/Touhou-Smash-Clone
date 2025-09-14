@@ -1,40 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
-
-[System.Serializable]
-public class axs
-{
-    [Header("For internal reference only")]
-    public string name;
-    public int buttonPositive;
-    public int buttonNegative;
-    public int value;
-}
-[System.Serializable]
-public class inpt
-{
-    //public InputActionReference 
-}
-[System.Serializable]
-public class cntrls
-{
-    [Header("For internal reference only")]
-    public string name;
-    public PlayerMoveset Character;
-    public PlayerAnimationManager animation;
-
-    [Space]
-    public inpt[] inputs;
-
-    [Space]
-    public axs[] inputAxes;
-}
 public class ControllerManager : MonoBehaviour
 {
-    public cntrls[] Players;
-
-    [Space]
     public bool devMode;
     public GameObject devUI;
     public TMP_Text d_inputs;
@@ -92,13 +60,13 @@ public class ControllerManager : MonoBehaviour
     }
     void devKeyCheck()
     {
-        /*axisValueUpdate();
         if (devMode)
         {
             d_inputs.text = null;
-            for (int i = 0; i < Players[0].inputs.Length; i++)
+            for (int i = 0; i < 0; i++)
             {
-                string inputColor = "<color=red>";
+                // pop texts in devmode based on Player inputs (like, if jump is held etc.)
+                /*string inputColor = "<color=red>";
                 if (Players[0].inputs[i].mode)
                 {
                     inputColor = "<color=green>";
@@ -108,55 +76,12 @@ public class ControllerManager : MonoBehaviour
                 if (Players[0].inputs[i].internalName == "mD" || Players[0].inputs[i].internalName == "mJ" || Players[0].inputs[i].internalName == "shield")
                 {
                     d_inputs.text += "\n";
-                }
+                }//*/
             }
         }
         //*/
     }
-    public void axisValueUpdate()
-    {
-        for (int i = 0; i < Players[0].inputAxes.Length; i++)
-        {
-            float oldAxVal = Players[0].inputAxes[i].value;
-            bool posInp = false;
-            bool negInp = false;
-
-            for (int a = 0; a < Players[0].inputs[Players[0].inputAxes[i].buttonPositive].keys.Length; a++)
-            {
-                if (Input.GetKey(Players[0].inputs[Players[0].inputAxes[i].buttonPositive].keys[a]))
-                {
-                    posInp = true;
-                    break;
-                }
-            }
-
-            for (int a = 0; a < Players[0].inputs[Players[0].inputAxes[i].buttonNegative].keys.Length; a++)
-            {
-                if (Input.GetKey(Players[0].inputs[Players[0].inputAxes[i].buttonNegative].keys[a]))
-                {
-                    negInp = true;
-                    break;
-                }
-            }
-
-            if (posInp == negInp)
-            {
-                Players[0].inputAxes[i].value = 0;
-            }
-            else
-            {
-                if (posInp) Players[0].inputAxes[i].value = 1;
-                else Players[0].inputAxes[i].value = -1;
-
-                if (Players[0].inputAxes[i].name == "horizontal" && Players[0].inputAxes[i].value != oldAxVal)
-                {
-                    //print("direChange");
-                    Players[0].animation.switchDirection(Players[0].inputAxes[i].value);
-                } // on movement direction change
-            }
-        }
-    }
-    private void OnApplicationFocus(bool focus)
+    /*private void OnApplicationFocus(bool focus) // not needed / not feasible
     {
         //print("LOCK TF IN: " + focus);
         if (!focus)
@@ -172,5 +97,5 @@ public class ControllerManager : MonoBehaviour
             devKeyCheck();
             //if (devMode) { print("Lost Focus!"); }
         } // kick off all inputs if lost focus
-    }
+    }//*/
 }
