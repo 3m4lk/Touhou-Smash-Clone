@@ -48,19 +48,21 @@ public class Hitbox : MonoBehaviour
                 if (attackCooldown != 0f) return;
 
                 print(collision.name);
-                if (collision.GetComponent<Hitbox>().hitboxType == hbt.Attack) return; // if other is also an attack; add more ignored hitboxes perhaps?
-                else if (collision.GetComponent<Hitbox>().hitboxType == hbt.Shield)
+                if (collision.GetComponent<Hitbox>())
                 {
-                    print("<color=cyan>SAFGD IDFSAHDFAIHIHFDSPAAFDIHSPIHPFADSIHPFDSAIHPDFASIHPFDSA");
-                    collision.attachedRigidbody.GetComponent<PlayerStats>().damageShield(damage);
-                    attackCooldown = 0.3f;
-                    return;
+                    if (collision.GetComponent<Hitbox>().hitboxType == hbt.Attack) return; // if other is also an attack; add more ignored hitboxes perhaps?
+                    else if (collision.GetComponent<Hitbox>().hitboxType == hbt.Shield)
+                    {
+                        print("<color=cyan>SAFGD IDFSAHDFAIHIHFDSPAAFDIHSPIHPFADSIHPFDSAIHPDFASIHPFDSA");
+                        collision.attachedRigidbody.GetComponent<PlayerStats>().damageShield(damage);
+                        attackCooldown = 0.3f;
+                        return;
+                    }
+
+                    collision.attachedRigidbody.GetComponent<PlayerStats>().dealDmg(damage, kbVector());
+                    //attackCooldown = 0.01f * 4f; // 3x fixed time step
+                    attackCooldown = 0.1f;
                 }
-
-                collision.attachedRigidbody.GetComponent<PlayerStats>().dealDmg(damage, kbVector());
-                //attackCooldown = 0.01f * 4f; // 3x fixed time step
-                attackCooldown = 0.1f;
-
                 break; // self
             case hbt.Invincible:
                 break; // self

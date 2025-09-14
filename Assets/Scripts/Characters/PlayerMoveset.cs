@@ -1,5 +1,14 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+public enum dir
+{
+    Up,
+    Down,
+    Left,
+    Right
+}
 [System.Serializable]
 public class move
 {
@@ -71,8 +80,8 @@ public class PlayerMoveset : MonoBehaviour
     public Rigidbody2D ownRb;
     public PlayerAnimationManager animManager;
 
-    public BoxCollider2D collision;
-    public BoxCollider2D crouchCollision;
+    public Collider2D collision, crouchCollision;
+    public PhysicsMaterial2D matGround, matAir;
 
     [Space(20)]
     // Desired
@@ -114,6 +123,8 @@ public class PlayerMoveset : MonoBehaviour
     private float sprintPushCooldown;
 
     private string lastVanityAnim;
+
+    public TMP_Text speedText;
 
     private void Awake()
     {
@@ -339,6 +350,8 @@ public class PlayerMoveset : MonoBehaviour
             forceJump(moveset.jumpHeight);
         }
         desJump = false;
+
+        speedText.text = ownRb.linearVelocityX + "";
     }
 
     void movement()
@@ -394,51 +407,59 @@ public class PlayerMoveset : MonoBehaviour
 
         if (isGrounded != oldGrounded)
         {
-            //animManager.ownAnimator.SetBool("isGrounded", isGrounded);
-
-            if (isGrounded)
-            {
-                // land on ground
-                //print("Landed!");
-                changeSprintMult();
-                duckState = false;
-                animManager.switchDirection(desMovementVector.x);
-                jumpsRemaining = moveset.jumpAmount;
-
-                // knock check
-                if (desMovementVector.x > 0.01f)
-                {
-                    vanityAnim("walk");
-                }
-                else
-                {
-                    vanityAnim("idle");
-                }
-
-                float switchDireVal = -1;
-                if (GetComponent<AIController>() && GetComponent<AIController>().enabled) switchDireVal = GetComponent<AIController>().inputAxis.x;
-                // else switchDireVal = ownController.Players[0].inputAxes[0].value; // change l8r to ownController.Players[PlayerIndex].inputAxes[0].value
-
-                animManager.switchDirection(switchDireVal, false, true);
-                //print("DIRE: " + ownController.Players[0].inputAxes[0].value);
-
-                if (ownStats.isKnocked) ownStats.knockProgress = 1.5f; // knockState for 2 secs when knocked touches floor
-
-                return;
-            }
-            // leave ground
-            //print("left the ground");
-
-            vanityAnim("x_shieldRelease");
-
-            //animManager.playAnimation("idleAir");
-            duckState = false;
-            if (desJump)
-            {
-                vanityAnim("idle"); // it works for some reason... WHY AND HOW DOES IT WORK ????????
-            }
-            jumpsRemaining = Mathf.Max(jumpsRemaining - 1, 0);
+            groundTap();
         }
+    }
+    void groundTap()
+    {
+        //animManager.ownAnimator.SetBool("isGrounded", isGrounded);
+
+        ownRb.sharedMaterial = matAir;
+
+        if (isGrounded)
+        {
+            ownRb.sharedMaterial = matGround;
+
+            // land on ground
+            //print("Landed!");
+            changeSprintMult();
+            duckState = false;
+            animManager.switchDirection(desMovementVector.x);
+            jumpsRemaining = moveset.jumpAmount;
+
+            // knock check
+            if (desMovementVector.x > 0.01f)
+            {
+                vanityAnim("walk");
+            }
+            else
+            {
+                vanityAnim("idle");
+            }
+
+            float switchDireVal = -1;
+            if (GetComponent<AIController>() && GetComponent<AIController>().enabled) switchDireVal = GetComponent<AIController>().inputAxis.x;
+            // else switchDireVal = ownController.Players[0].inputAxes[0].value; // change l8r to ownController.Players[PlayerIndex].inputAxes[0].value
+
+            animManager.switchDirection(switchDireVal, false, true);
+            //print("DIRE: " + ownController.Players[0].inputAxes[0].value);
+
+            if (ownStats.isKnocked) ownStats.knockProgress = 1.5f; // knockState for 2 secs when knocked touches floor
+
+            return;
+        }
+        // leave ground
+        //print("left the ground");
+
+        vanityAnim("x_shieldRelease");
+
+        //animManager.playAnimation("idleAir");
+        duckState = false;
+        if (desJump)
+        {
+            vanityAnim("idle"); // it works for some reason... WHY AND HOW DOES IT WORK ????????
+        }
+        jumpsRemaining = Mathf.Max(jumpsRemaining - 1, 0);
     }
 
     void forceJump(float input = default, Vector2 inputVec = default)
@@ -492,16 +513,11 @@ public class PlayerMoveset : MonoBehaviour
         }
         vanityAnim("idle");
     }
-    void changeSprintMult(float input = default)
+    void changeSprintMult(float input = 1f)
     {
-        if (input == default)
-        {
-            //animManager.ownAnimator.SetBool("isRunning", false);
-            sprintMultiplier = 1f;
-            return;
-        } // unsprint
-        //animManager.ownAnimator.SetBool("isRunning", true);
         sprintMultiplier = input;
+        //animManager.ownAnimator.SetBool("isRunning", (input != 1));
+        return;
     }
 
     public void vanityAnim(string input)
@@ -602,11 +618,230 @@ public class PlayerMoveset : MonoBehaviour
     }
     public void contrInput(InputAction.CallbackContext obj)
     {
-        print(obj.action.name + " || " + obj.action.triggered);
+        bool mode = obj.action.triggered;
+
+        if (ownStats.respawnOnInput) ownStats.respawn();
+
+        if (!ownStats.isAlive || ownStats.isStunned) return;
+
+        if (ownStats.isKnocked)
+        {
+            if (ownStats.knockProgress == 0f)
+            {
+                /*switch (input)
+                {
+                    case "mL":
+                        return;
+                    case "mR":
+                        return;
+                    case "mU":
+                        return;
+                    case "mD":
+                        return;
+                } // side directionals don't disable knock //*/ // yes they do, you've played brawl
+
+                //if (input == "mD") return; // except that one, this 1 stays
+
+                ownStats.bootOutOfKnock();
+            }
+            return;
+        }
+
+        //print(obj.action.name + " || " + obj.action.triggered);
         //print(obj.action.name + ": " + obj.action.ReadValue<Vector2>());
+        switch (obj.action.name)
+        {
+            default:
+                print("WHAT; this should be impossible");
+                break;
+            case "Move":
+                //pInputSides(mode);
+
+                desMovementVector = Vector2.ClampMagnitude(obj.action.ReadValue<Vector2>(), 1f);
+
+                //print(desMovementVector.x + " " + (Mathf.Abs(desMovementVector.x) > 0.9f)); // run
+
+
+                if (mode)
+                {
+                    if (sprintCooldown != 0 && Mathf.Abs(desMovementVector.x) >= 0.9f)
+                    {
+                        print("SPRINT");
+                        changeSprintMult(moveset.sprintMult);
+                        sprintStep = true;
+                    }
+                }
+                else
+                {
+                    sprintCooldown = 0.24f;
+                }
+
+                bool duckMode = isDire(desMovementVector, dir.Down);
+                if (isGrounded)
+                {
+                    //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
+
+                    duckCollisions(duckMode);
+
+                    duckState = duckMode;
+                    if (duckMode) vanityAnim("duck");
+                    else vanityAnim("idle");
+                }
+                if (duckMode)
+                {
+                    if (ownRb.linearVelocityY <= fastFallVelo * (1f / 3f) && ownRb.linearVelocityY > fastFallVelo)
+                    {
+                        //print("if above, set down velo to some amount; that fastfall thingy from smash");
+                        ownRb.linearVelocityY = fastFallVelo;
+                    }
+                }
+
+                // if timer != 0 && tapped, invoke sprint
+                // else, set timer to a value
+
+                GameObject.Find("inputVec").GetComponent<TMP_Text>().text = obj.action.ReadValue<Vector2>() + "";
+                break;
+            case "Jump":
+                duckCollisions(false);
+                desJump = mode;
+                break;
+            case "Run":
+                print("invoke run regardless of input strength (on true only)");
+                break;
+            case "Attack":
+                if (mode)
+                {
+                    duckState = false;
+                    duckCollisions(false);
+                    if (isGrounded)
+                    {
+                        switch (desMovementVector.y)
+                        {
+                            case -1:
+                                //print("dSmash");
+                                //animManager.playAnimation("x_downSmash");
+                                break;
+                            case 1:
+                                //print("uSmash");
+                                //animManager.playAnimation("x_upSmash");
+                                break;
+                            case 0:
+                                switch (desMovementVector.x)
+                                {
+                                    default:
+                                        //print("sSmash");
+                                        //animManager.playAnimation("x_sideSmash");
+                                        break;
+                                    case 0:
+                                        //print("jab");
+                                        //animManager.playAnimation("x_jab");
+                                        break;
+                                }
+                                break;
+                        }
+                        return;
+                    } // grounded
+                    //print("air");
+
+                    switch (desMovementVector.y)
+                    {
+                        case -1:
+                            //print("dAir");
+                            //animManager.playAnimation("x_dair");
+                            break;
+                        case 1:
+                            //print("uAir");
+                            //animManager.playAnimation("x_uair");
+                            break;
+                        case 0:
+                            switch (desMovementVector.x)
+                            {
+                                default:
+                                    //print("sAir");
+                                    animManager.switchDirection(desMovementVector.x, true);
+                                    //animManager.playAnimation("x_sair");
+                                    break;
+                                case 0:
+                                    //print("nAir");
+                                    //animManager.playAnimation("x_nair");
+                                    break;
+                            }
+                            break;
+                    }
+                }
+                break;
+            case "Shot":
+                duckState = false;
+                if (mode)
+                {
+                    duckCollisions(false);
+                    if (isDire(desMovementVector, dir.Up))
+                    {
+                        if (true) // !animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")
+                        {
+                            //print("recovery");
+                            animManager.switchDirection(desMovementVector.x, true);
+                            //animManager.playAnimation("x_recovery");
+                            forceJump(default, moveset.recoveryForce);
+                            jumpsRemaining = 0;
+                        } // idfc, this is a check if u can even do recovery
+                        return;
+                    }
+                    //animManager.playAnimation("x_shot");
+                    //print("shot");
+                }
+                break;
+            case "Direction Smash":
+                break;
+            case "Shield":
+                if (isGrounded)
+                {
+                    duckCollisions(false);
+                    if (mode)
+                    {
+                        //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
+
+                        //print("shield");
+                        vanityAnim("x_shield");
+                        return;
+                    }
+                    //print("shieldRelease");
+                    //shieldTime = 0.35f;
+                    vanityAnim("x_shieldRelease");
+                }
+                break;
+            case "Taunt":
+                if (mode && isGrounded)
+                {
+                    duckCollisions(false);
+                    //print("taunt");
+                    //vanityAnim("taunt");
+                    //animManager.playAnimation("taunt");
+                    return;
+                }
+                break;
+            case "Pause":
+                break;
+        }
     }
     public void disconnected()
     {
 
+    }
+    public bool isDire(Vector2 input, dir direction)
+    {
+        input = input.normalized;
+        switch (direction)
+        {
+            case dir.Up:
+                return (Vector2.Dot(input, Vector2.up) >= 0.5f);
+            case dir.Down:
+                return (Vector2.Dot(input, Vector2.down) >= 0.5f);
+            case dir.Left:
+                return (Vector2.Dot(input, Vector2.left) > 0.5f);
+            case dir.Right:
+                return (Vector2.Dot(input, Vector2.right) > 0.5f);
+        }
+        return false;
     }
 }

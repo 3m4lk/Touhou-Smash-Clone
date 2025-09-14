@@ -194,7 +194,8 @@ public class PlayerStats : MonoBehaviour
         moveset.ownRb.linearVelocity = hitKb;
 
         //print("do a hitstun if char is knocked with like, a shitton of kb");
-        print("kb amount: " + hitKb.magnitude);
+
+        // print("kb amount: " + hitKb.magnitude); // 
 
         // very weak kb attacks won't apply knock
         if (hitKb.magnitude > kbKnockThreshold.x * 10f)
@@ -225,7 +226,7 @@ public class PlayerStats : MonoBehaviour
         else
         {
             moveset.ownRb.linearVelocity = oldVelo; // matter of fact they won't even apply knockback, lmfao
-            print("<color=black>don't boot out of knock; matter of fact, don't even apply knockback... LMFAO");
+            // print("<color=black>don't boot out of knock; matter of fact, don't even apply knockback... LMFAO");
         }
 
         // if above kb threshold, apply knock

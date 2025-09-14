@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DirectionSmash",
+                    "name": "Direction Smash",
                     "type": "Value",
                     "id": "617f524f-9380-46c5-8b83-8d3ad00939e8",
                     "expectedControlType": "Vector2",
@@ -113,7 +113,7 @@
                 {
                     "name": "down",
                     "id": "ba1bea0b-17c7-483d-abb6-25e084c04aa4",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
@@ -124,7 +124,7 @@
                 {
                     "name": "left",
                     "id": "559dc600-8eb5-4d21-b7fa-2d7feb8d15a9",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
@@ -161,7 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "DirectionSmash",
+                    "action": "Direction Smash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
