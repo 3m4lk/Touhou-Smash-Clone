@@ -121,6 +121,8 @@ public class PlayerStats : MonoBehaviour
                 //animManager.playAnimation("idle");
             }
             isStunned = (stunProgress != 0f);
+            animManager.setBool("isStunned", isStunned);
+            if (isStunned) knockAnim();
 
             if (invulnerability == 0f)
             {
@@ -163,6 +165,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (!isStunned)
         {
+            moveset.isShielding = false;
             print("<color=red>SHIELDBREAK");
             ownHitbox.switchHitboxType(hbt.Hitbox);
             //ptinr("sb");
@@ -171,6 +174,8 @@ public class PlayerStats : MonoBehaviour
             print("sb");
 
             isStunned = true;
+            knockAnim();
+            animManager.setBool("isStunned", isStunned);
             moveset.ownRb.linearVelocity = shieldbreakBlast * 10f;
             stunProgress = stunTime;
         }
@@ -190,6 +195,10 @@ public class PlayerStats : MonoBehaviour
 
         //moveset.ownRb.AddForce(hitKb, ForceMode2D.Force);
 
+
+        bool oldJumpHold = moveset.isholdingJump;
+        moveset.isholdingJump = false;
+
         Vector2 oldVelo = moveset.ownRb.linearVelocity;
         moveset.ownRb.linearVelocity = hitKb;
 
@@ -202,6 +211,7 @@ public class PlayerStats : MonoBehaviour
         {
             stunProgress = 0;
             isStunned = false;
+            animManager.setBool("isStunned", isStunned);
             //animManager.playAnimation("idle");
 
             // cancel recovery fall animation
@@ -214,6 +224,9 @@ public class PlayerStats : MonoBehaviour
             if (hitKb.magnitude > kbKnockThreshold.y * 10f)
             {
                 isKnocked = true; // ...unless strength exceeds another threshold
+
+                knockAnim();
+
                 knockProgress = knockTime;
                 print("<color=green>Apply Knock");
                 //animManager.playAnimation("airKnocked", true);
@@ -222,9 +235,11 @@ public class PlayerStats : MonoBehaviour
             {
                 print("<color=yellow>boot out of knock");
             }
+            animManager.setBool("isKnocked", isKnocked);
         }
         else
         {
+            moveset.isholdingJump = oldJumpHold;
             moveset.ownRb.linearVelocity = oldVelo; // matter of fact they won't even apply knockback, lmfao
             // print("<color=black>don't boot out of knock; matter of fact, don't even apply knockback... LMFAO");
         }
@@ -303,6 +318,11 @@ public class PlayerStats : MonoBehaviour
         respawnPlatformIndex = match.pickRespawnPlatform();
         moveset.ownRb.position = match.respawnLocations[respawnPlatformIndex].position;
         // place Player on resp platform
+
+        animManager.setBool("isKnocked", isKnocked);
+        animManager.setBool("isStunned", isStunned);
+
+        animManager.setAnimation("idle");
     }
     public void toggleShield(bool mode)
     {
@@ -330,7 +350,8 @@ public class PlayerStats : MonoBehaviour
     public void bootOutOfKnock()
     {
         isKnocked = false;
-        moveset.vanityAnim("idle");
+        //moveset.vanityAnim("idle");
+        animManager.setBool("isKnocked", isKnocked);
     }
     public void makeInvuln(float duration, bool force = false)
     {
@@ -347,5 +368,14 @@ public class PlayerStats : MonoBehaviour
             shieldMode = false;
             shieldBreak();
         }
+    }
+    void knockAnim()
+    {
+        if (moveset.isGrounded)
+        {
+            if (isStunned) animManager.setAnimation("confused");
+            else animManager.setAnimation("knockedIdle");
+        }
+        else animManager.setAnimation("airKnocked");
     }
 }

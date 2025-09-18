@@ -55,7 +55,7 @@ AnimationClip:
         outWeight: {x: 0.33333334, y: 0.33333334, z: 0.33333334}
       - serializedVersion: 3
         time: 1.1428572
-        value: {x: 180, y: -95.83499, z: -90}
+        value: {x: 165.08, y: -96.04498, z: -91.561005}
         inSlope: {x: Infinity, y: Infinity, z: Infinity}
         outSlope: {x: Infinity, y: Infinity, z: Infinity}
         tangentMode: 0
@@ -2955,7 +2955,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.1428572
-        value: 180
+        value: 165.08
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -3021,7 +3021,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.1428572
-        value: -95.83499
+        value: -96.04498
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -3087,7 +3087,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.1428572
-        value: -90
+        value: -91.561005
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -9255,7 +9255,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9267,7 +9267,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9279,7 +9279,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso
+    path: Armature/torso/thigh.R/shin.R/foot.R
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9435,7 +9435,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9447,7 +9447,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -9459,7 +9459,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Armature/torso/thigh.R/shin.R/foot.R
+    path: Armature/torso
     classID: 4
     script: {fileID: 0}
     flags: 0

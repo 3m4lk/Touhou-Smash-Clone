@@ -149,7 +149,8 @@ public class AIController : MonoBehaviour
 
         for (int i = 0; i < commsToCancel.Length; i++)
         {
-            ownMoveset.processInput(commsToCancel[i], true);
+            //ownMoveset.processInput(commsToCancel[i], true);
+            print("fix ai stuff");
         }
     }
     void clearBacklog()
@@ -160,7 +161,8 @@ public class AIController : MonoBehaviour
 
         for (int i = 0; i < commsToCancel.Length; i++)
         {
-            ownMoveset.processInput(commsToCancel[i], false);
+            //ownMoveset.processInput(commsToCancel[i], false);
+            print("fix ai stuff");
         }
 
         commsToCancel = default;
