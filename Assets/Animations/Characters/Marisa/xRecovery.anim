@@ -6005,3 +6005,31 @@ AnimationClip:
     floatParameter: 0
     intParameter: 2
     messageOptions: 0
+  - time: 0
+    functionName: setVertVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: setHorVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.22222222
+    functionName: setHorVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 2
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.22222222
+    functionName: setVertVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 35
+    intParameter: 0
+    messageOptions: 0

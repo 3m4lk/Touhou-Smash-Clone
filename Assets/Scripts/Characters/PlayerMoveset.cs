@@ -6,9 +6,11 @@ public enum dir
     Up,
     Down,
     Left,
-    Right
+    Right,
+    Horizontal,
+    Vertical
 }
-[System.Serializable]
+/*[System.Serializable]
 public class move
 {
     //public string name; // for int reference only
@@ -36,7 +38,7 @@ public class move
     //[Space]
     //[Header("how much knockback cancels the attack")]
     //public float knockbackAmountToCancel;
-}
+}//*/
 [System.Serializable]
 public class mvst
 {
@@ -152,6 +154,8 @@ public class PlayerMoveset : MonoBehaviour
 
         if (isGrounded && desJump || jumpsRemaining > 0 && desJump)
         {
+            changeDuckState(false);
+
             if (!isGrounded)
             {
                 jumpsRemaining = Mathf.Max(jumpsRemaining - 1, 0); // just in case stupid shit happens
@@ -169,9 +173,23 @@ public class PlayerMoveset : MonoBehaviour
 
         speedText.text = ownRb.linearVelocityX + "";
     }
+    void changeDuckState(bool input)
+    {
+        if (input) changeSprintMult();
+        duckState = input;
+        animManager.setBool("isDucking", input);
+        duckCollisions(input);
+    }
 
     void movement()
     {
+        if (!ownStats.isAlive || ownStats.isStunned || ownStats.isKnocked)
+        {
+            desMovementVector = Vector2.zero;
+            print("CALLING MOVEMENT");
+            return;
+        }
+
         if (animManager.isState("noAttack") || duckState) return;
         //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack") && isGrounded || ownStats.shieldMode || ownStats.isKnocked && isGrounded || ownStats.isStunned) return;
         //vertVelo = ownRb.linearVelocityY;
@@ -190,7 +208,7 @@ public class PlayerMoveset : MonoBehaviour
         horMovVec.y = 0;
 
         float useSpeed = moveset.speed;
-        if (!isGrounded) useSpeed *= 0.8f;
+        if (!isGrounded && !ownStats.isKnocked) useSpeed *= 0.8f;
 
         //animManager.ownAnimator.SetBool("isWalking", desMovementVector.x > 0.01f);
 
@@ -235,6 +253,8 @@ public class PlayerMoveset : MonoBehaviour
 
         ownRb.sharedMaterial = matAir;
 
+        //duckState = false;
+
         if (isGrounded)
         {
             isholdingJump = false;
@@ -243,8 +263,9 @@ public class PlayerMoveset : MonoBehaviour
             // land on ground
             //print("Landed!");
             changeSprintMult();
-            duckState = false;
-            animManager.switchDirection(desMovementVector.x);
+            changeDuckState(false);
+            //print("<color=blue>(b)" + desMovementVector.x);
+            if (desMovementVector.x != 0) animManager.switchDirection(desMovementVector.x);
             jumpsRemaining = moveset.jumpAmount;
 
             // knock check
@@ -277,24 +298,15 @@ public class PlayerMoveset : MonoBehaviour
         //vanityAnim("x_shieldRelease");
 
         //animManager.playAnimation("idleAir");
-        duckState = false;
-        if (desJump)
-        {
-            //vanityAnim("idle"); // it works for some reason... WHY AND HOW DOES IT WORK ????????
-        }
+        changeDuckState(false);
         jumpsRemaining = Mathf.Max(jumpsRemaining - 1, 0);
     }
 
-    void forceJump(float input = default, Vector2 inputVec = default)
+    void forceJump(float input)
     {
+        if (animManager.isState("noAttack") || animManager.isState("specialFall")) return;
+        //isGrounded = false;
         changeSprintMult();
-
-        if (inputVec != default)
-        {
-            ownRb.linearVelocityX += inputVec.x * 10f * animManager.lookDire;
-            ownRb.linearVelocityY = inputVec.y * 10f;
-            return;
-        }
         ownRb.linearVelocityY = input * 10f;
     }
 
@@ -314,6 +326,8 @@ public class PlayerMoveset : MonoBehaviour
     }
     public void contrInput(InputAction.CallbackContext obj)
     {
+        //print(obj.action.name);
+
         //print("device: " + obj.action.activeControl.device.displayName);
         bool mode = obj.action.triggered;
 
@@ -321,7 +335,12 @@ public class PlayerMoveset : MonoBehaviour
 
         if (ownStats.respawnOnInput) ownStats.respawn();
 
-        if (!ownStats.isAlive || ownStats.isStunned) return;
+        if (!ownStats.isAlive || ownStats.isStunned)
+        {
+            animManager.setBool("isWalking", false);
+            animManager.setBool("isRunning", false);
+            return;
+        }
 
         if (ownStats.isKnocked)
         {
@@ -329,6 +348,11 @@ public class PlayerMoveset : MonoBehaviour
             {
                 ownStats.bootOutOfKnock();
             }
+
+            animManager.setBool("isWalking", false);
+            animManager.setBool("isRunning", false);
+
+            if (obj.action.name == "Move") desMovementVector = obj.action.ReadValue<Vector2>();
             if (ownRb.linearVelocityY > 0) return;
         }
 
@@ -345,8 +369,12 @@ public class PlayerMoveset : MonoBehaviour
                 //desMovementVector = Vector2.ClampMagnitude(obj.action.ReadValue<Vector2>(), 1f);
                 desMovementVector = obj.action.ReadValue<Vector2>();
 
+                //print("> " + desMovementVector);
+
                 isWalking = (Mathf.Abs(desMovementVector.x) >= 0.01f);
                 animManager.setBool("isWalking", isWalking);
+
+                //if (Mathf.Abs(desMovementVector.x) < 0.01f) return;
 
                 //print(desMovementVector.x + " " + (Mathf.Abs(desMovementVector.x) > 0.9f)); // run
 
@@ -354,20 +382,21 @@ public class PlayerMoveset : MonoBehaviour
 
                 if (mode)
                 {
-                    if (isGrounded)
+                    if (obj.action.activeControl.device.displayName != "Keyboard" && desMovementVector.magnitude > 0.99f && isDire(desMovementVector, dir.Up) && !isholdingJump) inpJump(mode);
+                    else if (isGrounded)
                     {
                         if (obj.action.activeControl.device.displayName == "Keyboard")
                         {
                             //print("kb");
-                            if (runHeld && runReleased && sprintCooldown != 0)
+                            if (runHeld && runReleased && sprintCooldown != 0 && isDire(desMovementVector, dir.Horizontal))
                             {
                                 //print("SPRINT");
                                 changeSprintMult(moveset.sprintMult);
                                 sprintStep = true;
                             }
-                            else sprintCooldown = 0.24f;
+                            else if (isDire(desMovementVector, dir.Horizontal)) sprintCooldown = 0.24f;
                         }
-                        else if (sprintCooldown != 0 && Mathf.Abs(desMovementVector.x) >= 0.9f)
+                        else if (sprintCooldown != 0 && Mathf.Abs(desMovementVector.x) >= 0.9f && isDire(desMovementVector, dir.Horizontal))
                         {
                             //print("SPRINT");
                             changeSprintMult(moveset.sprintMult);
@@ -377,7 +406,11 @@ public class PlayerMoveset : MonoBehaviour
                 }
                 else
                 {
-                    if (obj.action.activeControl.device.displayName != "Keyboard") sprintCooldown = 0.24f;
+                    if (obj.action.activeControl.device.displayName != "Keyboard")
+                    {
+                        sprintCooldown = 0.24f;
+                        isholdingJump = false;
+                    }
 
                     //if (runReleased) runReleased = false;
                     runReleased = true;
@@ -388,17 +421,16 @@ public class PlayerMoveset : MonoBehaviour
                 if (isGrounded)
                 {
                     //if (animManager.ownAnimator.GetCurrentAnimatorStateInfo(0).IsTag("noAttack")) return;
-
-                    duckCollisions(duckMode);
-
-                    duckState = duckMode;
-
-                    animManager.setBool("isDucking", duckState);
+                    changeDuckState(duckMode);
 
                     //if (duckMode) vanityAnim("duck");
                     //else vanityAnim("idle");
 
-                    if (desMovementVector.x != 0 && Mathf.Sign(desMovementVector.x) != animManager.lookDire) animManager.switchDirection(Mathf.Sign(desMovementVector.x));
+                    if (desMovementVector.x != 0 && Mathf.Sign(desMovementVector.x) != animManager.lookDire)
+                    {
+                        print("DIRESWITCH: " + desMovementVector.x);
+                        animManager.switchDirection(Mathf.Sign(desMovementVector.x));
+                    }
                 }
                 else if (duckMode && ownRb.linearVelocityY <= 0 && ownRb.linearVelocityY > fastFallVelo)
                 {
@@ -409,56 +441,22 @@ public class PlayerMoveset : MonoBehaviour
                 // if timer != 0 && tapped, invoke sprint
                 // else, set timer to a value
 
-                GameObject.Find("inputVec").GetComponent<TMP_Text>().text = obj.action.ReadValue<Vector2>() + "";
+                //GameObject.Find("inputVec").GetComponent<TMP_Text>().text = obj.action.ReadValue<Vector2>() + "";
                 break;
             case "Jump":
-                if (animManager.isState("noAttack") || animManager.isState("specialFall")) break;
-                duckCollisions(false);
-                desJump = mode;
-                if (isholdingJump && !mode && ownRb.linearVelocityY > 0 && !animManager.isState("noAttack")) ownRb.linearVelocityY *= 0.45f;
-                isholdingJump = mode;
-
-                Gamepad.current.SetMotorSpeeds(0f, 0f);
-
+                inpJump(mode);
                 break;
             case "Run":
                 print("invoke run regardless of input strength (on true only)");
                 break;
             case "Attack":
-                if (mode)
-                {
-                    duckState = false;
-                    duckCollisions(false);
-
-                    string atkName = "n";
-
-                    if (isDire(desMovementVector, dir.Up))
-                    {
-                        atkName = "u";
-                    }
-                    else if (isDire(desMovementVector, dir.Down))
-                    {
-                        atkName = "d";
-                    }
-                    else if (isDire(desMovementVector, dir.Left) || isDire(desMovementVector, dir.Right))
-                    {
-                        animManager.switchDirection(desMovementVector.x, true);
-                        atkName = "s";
-                    }
-                    // not adding "n" in else, it's already covered by default parameter
-
-                    atkName += "Smash";
-                    if (!isGrounded) atkName += "Air";
-
-                    //print(atkName);
-                    if (!animManager.isState("noAttack") && !animManager.isState("specialFall")) playAnim("x_" + atkName);
-                }
+                inpSmash(mode, desMovementVector);
                 break;
             case "Shot":
-                duckState = false;
+                changeDuckState(false);
                 if (mode)
                 {
-                    duckCollisions(false);
+                    //duckCollisions(false);
                     if (isDire(desMovementVector, dir.Up))
                     {
                         if (!animManager.isState("noAttack") && !animManager.isState("specialFall"))
@@ -469,7 +467,7 @@ public class PlayerMoveset : MonoBehaviour
 
                             playAnim("x_recovery");
 
-                            forceJump(default, moveset.recoveryForce);
+                            //forceJump(default, moveset.recoveryForce); // the animation will handle it
 
                             //playAnim("x_recovery");
 
@@ -486,6 +484,7 @@ public class PlayerMoveset : MonoBehaviour
                 }
                 break;
             case "Direction Smash":
+                inpSmash(mode, obj.action.ReadValue<Vector2>(), true);
                 break;
             case "Shield":
                 if (!animManager.isName("x_shield") && (animManager.isState("noAttack") || animManager.isState("specialFall"))) break;
@@ -524,6 +523,51 @@ public class PlayerMoveset : MonoBehaviour
                 break;
             case "Pause":
                 break;
+            case "devSkinSwitch":
+                //print("devSkinSwitch");
+                if (mode) GetComponent<PlayerSkinApplier>().skinSwitch();
+                break;
+        }
+    }
+    void inpJump(bool mode)
+    {
+        if (animManager.isState("noAttack") || animManager.isState("specialFall")) return;
+        //duckCollisions(false);
+        changeDuckState(false);
+        desJump = mode;
+        if (isholdingJump && !mode && ownRb.linearVelocityY > 0 && !animManager.isState("noAttack")) ownRb.linearVelocityY *= 0.6f;
+        isholdingJump = mode;
+
+        //Gamepad.current.SetMotorSpeeds(0f, 0f);
+    }
+    void inpSmash(bool mode, Vector2 dire, bool isDireSmash = false)
+    {
+        if (mode && (!isDireSmash || isDireSmash && dire.magnitude > 0.3f))
+        {
+            changeDuckState(false);
+
+            string atkName = "n";
+
+            if (isDire(dire, dir.Up))
+            {
+                atkName = "u";
+            }
+            else if (isDire(dire, dir.Down))
+            {
+                atkName = "d";
+            }
+            else if (isDire(dire, dir.Horizontal))
+            {
+                animManager.switchDirection(dire.x, true);
+                atkName = "s";
+            }
+            // not adding "n" in else, it's already covered by default parameter
+
+            atkName += "Smash";
+            if (!isGrounded || desJump) atkName += "Air";
+
+            //print(atkName);
+            if (!animManager.isState("noAttack") && !animManager.isState("specialFall")) playAnim("x_" + atkName);
         }
     }
     public void manageInputs(string input)
@@ -547,6 +591,11 @@ public class PlayerMoveset : MonoBehaviour
                 return (Vector2.Dot(input, Vector2.left) > 0.5f);
             case dir.Right:
                 return (Vector2.Dot(input, Vector2.right) > 0.5f);
+            case dir.Horizontal:
+                //print(Vector2.Dot(new Vector2(Mathf.Abs(input.x), input.y), Vector2.right));
+                return (Vector2.Dot(new Vector2(Mathf.Abs(input.x), input.y), Vector2.right) > 0.71f);
+            case dir.Vertical:
+                return (Vector2.Dot(new Vector2(input.x, Mathf.Abs(input.y)), Vector2.up) > 0.71f);
         }
         return false;
     }

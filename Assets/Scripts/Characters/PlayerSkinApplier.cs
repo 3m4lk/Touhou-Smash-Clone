@@ -17,18 +17,11 @@ public class PlayerSkinApplier : MonoBehaviour
         if (possibleSkins.Length == 0) return;
         applySkin(testSkin);
     }
-    private void Update()
+    public void skinSwitch()
     {
-        return;
-        if (Input.GetKeyDown("u"))
-        {
-            if (skinName)
-            {
-                testSkin = (int)Mathf.Repeat(testSkin + 1, possibleSkins.Length);
-                applySkin(testSkin);
-                skinName.text = GetComponent<PlayerMoveset>().moveset.fullName + "'s skin: " + possibleSkins[testSkin].name;
-            }
-        }
+        testSkin = (int)Mathf.Repeat(testSkin + 1, possibleSkins.Length);
+        applySkin(testSkin);
+        skinName.text = GetComponent<PlayerMoveset>().moveset.fullName + "'s skin: " + possibleSkins[testSkin].name;
     }
     public void applySkin(int input)
     {

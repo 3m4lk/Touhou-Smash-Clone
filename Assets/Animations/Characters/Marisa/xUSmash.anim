@@ -11142,3 +11142,17 @@ AnimationClip:
     floatParameter: 0
     intParameter: 2
     messageOptions: 0
+  - time: 0.1
+    functionName: setVertVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 3
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.13333334
+    functionName: setHorVelo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 8
+    intParameter: 0
+    messageOptions: 0
