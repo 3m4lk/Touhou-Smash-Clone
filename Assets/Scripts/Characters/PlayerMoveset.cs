@@ -39,33 +39,6 @@ public class move
     //[Header("how much knockback cancels the attack")]
     //public float knockbackAmountToCancel;
 }//*/
-[System.Serializable]
-public class mvst
-{
-    [Tooltip("idk what for but SURELY this could be useful for sum?")]
-    public string fullName;
-    public string name;
-    public string ownColor = "FFFFFF";
-
-    [Space]
-    public string title;
-
-    [Space]
-    public int skin;
-
-    public int jumpAmount;
-
-    [Space]
-    public float speed;
-    public float jumpHeight;
-    public float gravityStrength = 1f;
-
-    public float sprintMult = 1f;
-    public float startStepMult = 1f;
-    public float sprintStepMult = 1f;
-
-    public Vector2 recoveryForce;
-}
 
 public class PlayerMoveset : MonoBehaviour
 {
