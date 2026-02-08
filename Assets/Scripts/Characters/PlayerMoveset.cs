@@ -140,7 +140,7 @@ public class PlayerMoveset : MonoBehaviour
                 playAnim("jump");
                 //vanityAnim("jump");
             }
-            forceJump(moveset.jumpHeight);
+            //forceJump(moveset.jumpHeight);
         }
         desJump = false;
 
